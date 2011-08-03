@@ -172,7 +172,8 @@ class LEDMatrix extends PApplet {
 		if (sweepCount < 40) {
 		//	println("line x:" + sweepCount);
 			allOff();
-			drawLine(sweepCount, 0, sweepCount, height - 1, 84, 201, 255);
+		//	drawLine(sweepCount, 0, sweepCount, height - 1, 84, 201, 255);
+			myDrawLineDown(sweepCount, 0, sweepCount, height, 84, 201, 255);
 			sweepCount++;
 			// refresh();
 		} else {

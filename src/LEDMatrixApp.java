@@ -43,23 +43,23 @@ public class LEDMatrixApp extends PApplet {
 		currentcolor = baseColor;
 
 		// Define and create rectangle button
-		buttoncolor = color(102);
-		highlight = color(51);
+		buttoncolor = color(84, 201, 255);
+		highlight = color(255);
 		rect1 = new RectButton(20, 250, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
-		buttoncolor = color(51);
-		highlight = color(0);
+		buttoncolor = color(255, 0, 0);
+		highlight = color(255);
 		rect2 = new RectButton(50, 250, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
-		buttoncolor = color(255, 200, 40);
+		buttoncolor = color(84, 255, 133);
 		highlight = color(255);
 		rect3 = new RectButton(80, 250, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
-		buttoncolor = color(15, 231, 33);
-		highlight = color(151, 255, 160);
+		buttoncolor = color(255, 240, 0);
+		highlight = color(255);
 		rect4 = new RectButton(110, 250, 20, buttoncolor, highlight);
 
 		img = loadImage("antarctic.jpg");
