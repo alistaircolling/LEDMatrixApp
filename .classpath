@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="serial/src">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Applications/Processing.app/Contents/Resources/Java/libraries/serial/library"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jogl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="VAMWeek5/libNative"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/opengl.jar"/>
+	<classpathentry kind="lib" path="lib/toxiclibscore.jar"/>
+	<classpathentry kind="lib" path="lib/verletphysics.jar"/>
+	<classpathentry kind="lib" path="lib/RXTXcomm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LEDMatrixApp/libNative"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Applications/Processing.app/Contents/Resources/Java/libraries/serial/library/serial.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Applications/Processing.app/Contents/Resources/Java/libraries/serial/library"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
