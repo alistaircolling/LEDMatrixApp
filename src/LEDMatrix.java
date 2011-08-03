@@ -2,6 +2,7 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 import processing.*;
+import toxi.geom.Vec2D;
 
 //
 
@@ -27,11 +28,25 @@ class LEDMatrix extends PApplet {
 	}
 
 	int getXY(int x, int y) {
+		int ret;
 		if (y % 2 > 0) {
-			return (((y + 1) * width) - x - 1);
+			ret =  (((y + 1) * width) - x - 1);
 		} else {
-			return ((y * width) + x);
+			ret =  ((y * width) + x);
 		}
+		
+		//println("get pos for x:"+x+"  y:"+y+" pos:"+ret+" converted back?:"+getXYFromPos(ret).toString());
+		
+		return ret;
+	}
+
+	Vec2D getXYFromPos(int pos) {
+
+		Vec2D vec = new Vec2D();
+		vec.x = pos % width;
+		vec.y = floor(pos / width);
+		return vec;
+
 	}
 
 	boolean drawLine(int thex0, int they0, int thex1, int they1, int r, int g,
@@ -72,10 +87,8 @@ class LEDMatrix extends PApplet {
 		{
 			if (steep) {
 				lc.setRGB(getXY(y, x), r, g, b);
-				lc.fakeDraw(x, y, r, g, b);
 			} else {
 				lc.setRGB(getXY(x, y), r, g, b);
-				lc.fakeDraw(x, y, r, g, b);
 			}
 			error = error + deltay;
 			if (2 * error >= deltax) {
@@ -147,25 +160,30 @@ class LEDMatrix extends PApplet {
 	}
 
 	public void runDemo2() {
-		sweepWidth();
-		sweepHeight();
-
-		for (int i = 0; i < 10; i++) {
-
-			allOff();
-			drawBox(0, 0, width - 1, height - 1, 255, 0, 0);
-			refresh();
-			delay(200);
-			allOff();
-			drawBox(1, 1, width - 2, height - 2, 0, 255, 0);
-			refresh();
-			delay(200);
-			allOff();
-			drawBox(0, 0, width - 1, height - 1, 255, 255, 0);
-			drawBox(1, 1, width - 2, height - 2, 255, 0, 255);
-			refresh();
-			delay(200);
-		}
+		// sweepWidth();
+		// sweepHeight();
+		println("DEMO 2");
+		allOff();
+		allTo(85, 255, 70);
+		lc.SendLEDs();
+		delay(3000);
+		//
+		// for (int i = 0; i < 10; i++) {
+		//
+		// allOff();
+		// drawBox(0, 0, width - 1, height - 1, 123, 67, 89);
+		// refresh();
+		// delay(2000);
+		// allOff();
+		// // drawBox(1, 1, width - 2, height - 2, 23, 12, 234);
+		// // refresh();
+		// // delay(200);
+		// // allOff();
+		// // drawBox(0, 0, width - 1, height - 1, 34, 23, 56);
+		// // drawBox(1, 1, width - 2, height - 2, 56, 123, 78);
+		// // refresh();
+		// // delay(200);
+		// }
 
 	}
 

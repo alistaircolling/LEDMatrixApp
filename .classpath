@@ -17,7 +17,7 @@
 	<classpathentry kind="lib" path="lib/opengl.jar"/>
 	<classpathentry kind="lib" path="lib/toxiclibscore.jar"/>
 	<classpathentry kind="lib" path="lib/verletphysics.jar"/>
-	<classpathentry kind="lib" path="lib/RXTXcomm.jar">
+	<classpathentry kind="lib" path="/Users/alistaircolling/Documents/EclipseWorkspace/LEDMatrixApp/lib/RXTXcomm.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LEDMatrixApp/libNative"/>
 		</attributes>
@@ -27,5 +27,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Applications/Processing.app/Contents/Resources/Java/libraries/serial/library"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/colorutils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

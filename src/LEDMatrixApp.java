@@ -23,14 +23,14 @@ public class LEDMatrixApp extends PApplet {
 		println("hi hi hi hi");
 
 		lc = new LEDController(1000, this);
-		matrix = new LEDMatrix(lc, 5, 4);
+		matrix = new LEDMatrix(lc, 40, 25);
 
 		myPort = new Serial(this, Serial.list()[0], 115200);
 		lc.begin(myPort);
 
 		// --- LED Controller setup END
 
-		size(400, 400);
+		size(400, 250);
 		smooth();
 
 		int baseColor = color(102);
@@ -44,19 +44,19 @@ public class LEDMatrixApp extends PApplet {
 		// Define and create rectangle button
 		buttoncolor = color(102);
 		highlight = color(51);
-		rect1 = new RectButton(20, 20, 100, buttoncolor, highlight);
+		rect1 = new RectButton(20, 20, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
 		buttoncolor = color(51);
 		highlight = color(0);
-		rect2 = new RectButton(160, 20, 100, buttoncolor, highlight);
+		rect2 = new RectButton(160, 20, 20, buttoncolor, highlight);
 	}
 
 	public void draw() {
 
 		background(currentcolor);
 		lc.display();
-		stroke(255);
+		//stroke(255);
 		update(mouseX, mouseY);
 		rect1.display();
 		rect2.display();
@@ -74,7 +74,7 @@ public class LEDMatrixApp extends PApplet {
 		if (mousePressed) {
 			if (rect1.pressed()) {
 				currentcolor = rect1.basecolor;
-			//	matrix.runDemo1();
+				matrix.runDemo1();
 				
 			} else if (rect2.pressed()) {
 				currentcolor = rect2.basecolor;
