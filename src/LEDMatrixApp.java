@@ -6,7 +6,7 @@ public class LEDMatrixApp extends PApplet {
 	// ======================================== END LC & Matrix
 	int currentcolor;
 
-	RectButton rect1, rect2;
+	RectButton rect1, rect2, rect3;
 	boolean locked = false;
 
 	private Serial myPort;
@@ -16,12 +16,11 @@ public class LEDMatrixApp extends PApplet {
 
 	public void setup() {
 		// --- LED Controller setup
+		size(400, 300);
 
 		String[] lister = Serial.list();
 		
-		
-		println("hi hi hi hi");
-
+	//	println("hi hi hi hi");
 		lc = new LEDController(1000, this);
 		matrix = new LEDMatrix(lc, 40, 25);
 
@@ -30,7 +29,6 @@ public class LEDMatrixApp extends PApplet {
 
 		// --- LED Controller setup END
 
-		size(400, 250);
 		smooth();
 
 		int baseColor = color(102);
@@ -44,22 +42,29 @@ public class LEDMatrixApp extends PApplet {
 		// Define and create rectangle button
 		buttoncolor = color(102);
 		highlight = color(51);
-		rect1 = new RectButton(20, 20, 20, buttoncolor, highlight);
+		rect1 = new RectButton(20, 250, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
 		buttoncolor = color(51);
 		highlight = color(0);
-		rect2 = new RectButton(160, 20, 20, buttoncolor, highlight);
+		rect2 = new RectButton(50, 250, 20, buttoncolor, highlight);
+		
+		// Define and create rectangle button
+		buttoncolor = color(255, 200, 40);
+		highlight = color(255);
+		rect3 = new RectButton(80, 250, 20, buttoncolor, highlight);
 	}
 
 	public void draw() {
-
+	//	println("draw");
+		matrix.refresh();
 		background(currentcolor);
 		lc.display();
 		//stroke(255);
 		update(mouseX, mouseY);
 		rect1.display();
 		rect2.display();
+		rect3.display();
 
 	}
 
@@ -67,6 +72,7 @@ public class LEDMatrixApp extends PApplet {
 		if (locked == false) {
 			rect1.update();
 			rect2.update();
+			rect3.update();
 		} else {
 			locked = false;
 		}
@@ -79,6 +85,9 @@ public class LEDMatrixApp extends PApplet {
 			} else if (rect2.pressed()) {
 				currentcolor = rect2.basecolor;
 				matrix.runDemo2();
+			} else if (rect3.pressed()) {
+				currentcolor = rect3.basecolor;
+				matrix.runDemo3();
 			}
 		}
 	}

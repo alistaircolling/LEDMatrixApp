@@ -11,12 +11,16 @@ class LEDMatrix extends PApplet {
 	// The LED Controller to use with this matrix
 	// LEDController ledC;
 	// The size of the matrix
-	int width = 5;
-	int height = 4;
+	int width = 40;
+	int height = 25;
 	int matStart = 0;
 
 	Serial myPort;
 	LEDController lc;// = new LEDController(1000);
+	private int sweepCount;
+	private boolean sweepAcross;
+	private boolean startAdding;
+	private int count;
 
 	// LEDMatrix matrix = new LEDMatrix(lc, 5, 4);
 
@@ -30,13 +34,13 @@ class LEDMatrix extends PApplet {
 	int getXY(int x, int y) {
 		int ret;
 		if (y % 2 > 0) {
-			ret =  (((y + 1) * width) - x - 1);
+			ret = (((y + 1) * width) - x - 1);
 		} else {
-			ret =  ((y * width) + x);
+			ret = ((y * width) + x);
 		}
-		
-		//println("get pos for x:"+x+"  y:"+y+" pos:"+ret+" converted back?:"+getXYFromPos(ret).toString());
-		
+
+		// println("get pos for x:"+x+"  y:"+y+" pos:"+ret+" converted back?:"+getXYFromPos(ret).toString());
+
 		return ret;
 	}
 
@@ -127,7 +131,25 @@ class LEDMatrix extends PApplet {
 	}
 
 	void refresh() {
+	//	println("refresh");
+		if (sweepAcross) {
+			sweepWidth();
+		}
+		if (startAdding){
+			addUp();
+		}
 		lc.SendLEDs();
+	}
+
+	private void addUp() {
+	//	println("add all:"+count);
+		if (count<(width*height)){
+			lc.setRGB(count, 255, 0, 255);
+			count++;
+		}else{
+			startAdding = false;
+		}
+		
 	}
 
 	void strobeOnOff(int theTimes) {
@@ -140,33 +162,78 @@ class LEDMatrix extends PApplet {
 	}
 
 	void sweepWidth() {
-		for (int j = 0; j < width; j++) {
+		if (sweepCount < 40) {
+		//	println("line x:" + sweepCount);
 			allOff();
-			drawLine(j, 0, j, height - 1, 255, 255, 255);
-			refresh();
+			drawLine(sweepCount, 0, sweepCount, height - 1, 84, 201, 255);
+			sweepCount++;
+			// refresh();
+		} else {
+			sweepAcross = false;
 		}
 	}
 
 	void sweepHeight() {
 		for (int j = 0; j < height; j++) {
 			allOff();
-			drawLine(0, j, width - 1, j, 255, 255, 255);
+			drawLine(0, j, width - 1, j, 255, 249, 84);
 			refresh();
+		}
+	}
+	
+
+	public void runDemo3() {
+		
+		allOff();
+		myDrawLineDown(0, 1, 0, 24, 84, 255, 133 );
+		myDrawLineDown(20, 1, 20, 24, 84, 255, 133 );
+		myDrawLineAcross(1, 1, 20, 1, 84, 255, 133 );
+		myDrawLineAcross(1, 10, 20, 10, 84, 255, 133 );
+		
+		
+		lc.SendLEDs();
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void myDrawLineDown(int i, int j, int k, int l, int r, int g, int b) {
+		int targHeight = l-j;
+		for (int l2 = 0; l2 < targHeight; l2++) {
+			int theX = i;
+			int theY = j+l2;
+			int point = (theY*width)+theX;
+			lc.setRGB(point, r, g, b);
+		}
+	}
+	private void myDrawLineAcross(int i, int j, int k, int l, int r, int g, int b) {
+		int targWidth= k-i;
+		for (int l2 = 0; l2 < targWidth; l2++) {
+			int theX = l2+i;
+			int theY = j;
+			int point = (theY*width)+theX;
+			lc.setRGB(point, r, g, b);
 		}
 	}
 
 	public void runDemo1() {
-		strobeOnOff(10);
+		// strobeOnOff(10);
+		allOff();
+		sweepCount = 0;
+		sweepAcross = true;
+		// sweepHeight();
 	}
 
 	public void runDemo2() {
 		// sweepWidth();
 		// sweepHeight();
-		println("DEMO 2");
+	//	println("DEMO 2");
 		allOff();
-		allTo(85, 255, 70);
-		lc.SendLEDs();
-		delay(3000);
+		
+		//lc.SendLEDs();
+		//delay(1000);
+		
+		startAdding = true;
+		count = 0;
 		//
 		// for (int i = 0; i < 10; i++) {
 		//
@@ -195,4 +262,5 @@ class LEDMatrix extends PApplet {
 			val = theVal;
 		}
 	}
+
 }

@@ -74,36 +74,23 @@ class LEDController extends PApplet {
 	}
 
 	public void display() {
-		// TODO Auto-generated method stub
+	//	println("display");
 		// app.background(255, 0, 234);
 		for (int i = 0; i < ledBuffer.length; i += 3) {
 
 			if (i % 3 == 0 && i < (ledBuffer.length - 3) && i > 0) {
-				TColor col = TColor.BLACK.copy();
-				
-				Vec2D vec = getXYFromPos(i-3);
-				
-				col.setRGB(unsignedByteToInt(ledBuffer[i - 3]),
-						unsignedByteToInt(ledBuffer[i - 2]),
-						unsignedByteToInt(ledBuffer[i - 1]));
 				
 				app.noStroke();
-				//app.fill(sendBuffer[i - 3], sendBuffer[i - 2], sendBuffer[i - 1]);
-				//app.fill(col.toARGB());
-				app.fill(255, 0, 255);
-		//		println("vector:"+vec.toString());
-				int theX = (i%(LEDS_WIDE*3))/3;
+				app.fill(unsignedByteToInt(ledBuffer[i - 2]) , unsignedByteToInt(ledBuffer[i - 1]) , unsignedByteToInt(ledBuffer[i - 0]));
+				
+				int theX = (i%(LEDS_WIDE*3))/3-1;
 				int theY = floor(((i-theX)/3)/LEDS_WIDE);
-				println("i:" + i+" x:"+theX+"  y:"+theY);
 				app.rect(theX*10, theY*10, 10, 10);
 			
 			}
 
 		}
 
-		// app.stroke(col.toARGB());
-		// app.fill(col.toARGB());
-		// app.rect(0, 0, 1, 1);
 
 	}
 
@@ -125,24 +112,25 @@ class LEDController extends PApplet {
 		for (int i = 0; i < LED_BULB_COUNT; i += LED_SEND_BUFFER_SIZE) {
 			for (int j = 0; j < LED_SEND_BUFFER_SIZE; j++) {
 				sendBuffer[j] = ledBuffer[i + j];
-
-				println(j + "this j:" + unsignedByteToInt(sendBuffer[j]));
-				if (j % 3 == 0 && j < (LED_SEND_BUFFER_SIZE - 3) && j > 0) {
-					
-					Vec2D vec = getXYFromPos(j);
-					
-					TColor col = TColor.BLACK.copy();
-					col.setRGB(unsignedByteToInt(sendBuffer[j - 3]),
-							unsignedByteToInt(sendBuffer[j - 2]),
-							unsignedByteToInt(sendBuffer[j - 1]));
-					app.stroke(col.toARGB());
-					app.fill(col.toARGB());
-					app.rect(random(0, 40), random(0, 25), 1, 1);
-					println("j:" + j);
-					println("r:" + unsignedByteToInt(sendBuffer[j - 3]) + " g:"
-							+ unsignedByteToInt(sendBuffer[j - 2]) + " b:"
-							+ unsignedByteToInt(sendBuffer[j - 1]));
-				}
+//
+//				//println(j + "this j:" + unsignedByteToInt(sendBuffer[j]));
+//				if (j % 3 == 0 && j < (LED_SEND_BUFFER_SIZE - 3) && j > 0) {
+//					
+//					
+//					app.noStroke();
+//				//	app.fill(unsignedByteToInt(sendBuffer[j - 3]) ,
+//					//		 unsignedByteToInt(sendBuffer[j - 2]) ,
+//						//	 unsignedByteToInt(sendBuffer[j - 1]));
+//					int r = unsignedByteToInt(sendBuffer[j - 3]); 
+//					int g = unsignedByteToInt(sendBuffer[j - 2]);
+//					int b = unsignedByteToInt(sendBuffer[j - 1]);
+//					
+//					app.fill(r, g, b);
+//					app.rect(random(0, 40), random(0, 25), 1, 1);
+//					//println("j:" + j);
+//					
+//					
+//				}
 
 			}
 			sp.write(sendBuffer);
