@@ -83,7 +83,7 @@ class LEDController extends PApplet {
 				int r = unsignedByteToInt(ledBuffer[i]);
 				int g = unsignedByteToInt(ledBuffer[i+2]);
 				int b = unsignedByteToInt(ledBuffer[i+1]);
-				println("R:"+r+"  g:"+g+"  b:"+b);
+		//		println("R:"+r+"  g:"+g+"  b:"+b);
 				app.noStroke();
 			//	app.fill(unsignedByteToInt(ledBuffer[i - 2]) , unsignedByteToInt(ledBuffer[i - 1]) , unsignedByteToInt(ledBuffer[i - 0]));
 				app.fill(r, g, b);

@@ -146,7 +146,12 @@ class LEDMatrix extends PApplet {
 	private void addUp() {
 	//	println("add all:"+count);
 		if (count<(width*height)){
-			lc.setRGB(count, 255, 0, 255);
+			float huez = count/1000f;
+			TColor col = TColor.BLACK.copy();
+			col.setHSV(huez, 100, 100);
+		//	col.newHSV(huez, 100, 100);
+			
+			lc.setRGB(count, round(col.red()*255), round(col.green()*255), round(col.blue()*255));
 			count++;
 		}else{
 			startAdding = false;
@@ -187,11 +192,14 @@ class LEDMatrix extends PApplet {
 	public void runDemo3() {
 		
 		allOff();
-		myDrawLineDown(0, 1, 0, 24, 84, 255, 133 );
-		myDrawLineDown(20, 1, 20, 24, 84, 255, 133 );
-		myDrawLineAcross(1, 1, 20, 1, 84, 255, 133 );
-		myDrawLineAcross(1, 10, 20, 10, 84, 255, 133 );
-		
+		myDrawLineDown(0, 0, 0, 25, 84, 255, 133 );
+		myDrawLineDown(15, 0, 15, 25, 84, 255, 133 );
+		myDrawLineAcross(0, 0, 15, 0, 84, 255, 133 );
+		myDrawLineAcross(0, 10, 15, 10, 84, 255, 133 );
+		myDrawLineDown(18, 0, 18, 24, 84, 255, 133);
+		myDrawLineAcross(18, 24, 32, 24, 84, 255, 133 );
+		myDrawLineDown(35, 0, 30, 5, 84, 255, 133);
+		myDrawLineDown(35, 7, 30, 25, 84, 255, 133);
 		
 		lc.SendLEDs();
 		// TODO Auto-generated method stub
@@ -266,6 +274,8 @@ class LEDMatrix extends PApplet {
 	}
 
 	public void runDemo4(PImage img) {
+		sweepAcross = false;
+		startAdding =  false;
 	//	allOff();
 		for (int i = 0; i < img.pixels.length; i++) {
 			TColor col = TColor.BLACK.copy();
