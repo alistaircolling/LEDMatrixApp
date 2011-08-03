@@ -153,6 +153,7 @@ class LEDMatrix extends PApplet {
 			
 			lc.setRGB(count, round(col.red()*255), round(col.green()*255), round(col.blue()*255));
 			count++;
+			lc.SendLEDs();
 		}else{
 			startAdding = false;
 		}
@@ -176,6 +177,7 @@ class LEDMatrix extends PApplet {
 			myDrawLineDown(sweepCount, 0, sweepCount, height, 84, 201, 255);
 			sweepCount++;
 			// refresh();
+			lc.SendLEDs();
 		} else {
 			sweepAcross = false;
 		}
