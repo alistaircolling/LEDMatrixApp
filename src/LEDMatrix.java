@@ -1,7 +1,9 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.serial.Serial;
 
 import processing.*;
+import toxi.color.TColor;
 import toxi.geom.Vec2D;
 
 //
@@ -261,6 +263,20 @@ class LEDMatrix extends PApplet {
 		IntHolder(int theVal) {
 			val = theVal;
 		}
+	}
+
+	public void runDemo4(PImage img) {
+	//	allOff();
+		for (int i = 0; i < img.pixels.length; i++) {
+			TColor col = TColor.BLACK.copy();
+			col.setARGB(img.pixels[i]);
+			lc.setRGB(i, round(col.red() *255), round(col.green()*255),round(col.blue()));
+			
+		}
+		lc.SendLEDs();
+		
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -1,12 +1,13 @@
+import processing.core.PApplet;
+import processing.core.PImage;
 import processing.serial.Serial;
-import processing.core.*;
 
 public class LEDMatrixApp extends PApplet {
 
 	// ======================================== END LC & Matrix
 	int currentcolor;
 
-	RectButton rect1, rect2, rect3;
+	RectButton rect1, rect2, rect3, rect4;
 	boolean locked = false;
 
 	private Serial myPort;
@@ -14,13 +15,15 @@ public class LEDMatrixApp extends PApplet {
 	private LEDController lc;
 	private LEDMatrix matrix;
 
+	private PImage img;
+
 	public void setup() {
 		// --- LED Controller setup
 		size(400, 300);
 
 		String[] lister = Serial.list();
-		
-	//	println("hi hi hi hi");
+
+		// println("hi hi hi hi");
 		lc = new LEDController(1000, this);
 		matrix = new LEDMatrix(lc, 40, 25);
 
@@ -48,23 +51,32 @@ public class LEDMatrixApp extends PApplet {
 		buttoncolor = color(51);
 		highlight = color(0);
 		rect2 = new RectButton(50, 250, 20, buttoncolor, highlight);
-		
+
 		// Define and create rectangle button
 		buttoncolor = color(255, 200, 40);
 		highlight = color(255);
 		rect3 = new RectButton(80, 250, 20, buttoncolor, highlight);
+
+		// Define and create rectangle button
+		buttoncolor = color(15, 231, 33);
+		highlight = color(151, 255, 160);
+		rect4 = new RectButton(110, 250, 20, buttoncolor, highlight);
+
+		img = loadImage("antarctic.jpg");
 	}
 
 	public void draw() {
-	//	println("draw");
+		// println("draw");
 		matrix.refresh();
 		background(currentcolor);
 		lc.display();
-		//stroke(255);
+		// stroke(255);
 		update(mouseX, mouseY);
 		rect1.display();
 		rect2.display();
 		rect3.display();
+		rect4.display();
+		image(img, 400 - 40, 250);
 
 	}
 
@@ -73,6 +85,7 @@ public class LEDMatrixApp extends PApplet {
 			rect1.update();
 			rect2.update();
 			rect3.update();
+			rect4.update();
 		} else {
 			locked = false;
 		}
@@ -81,13 +94,16 @@ public class LEDMatrixApp extends PApplet {
 			if (rect1.pressed()) {
 				currentcolor = rect1.basecolor;
 				matrix.runDemo1();
-				
+
 			} else if (rect2.pressed()) {
 				currentcolor = rect2.basecolor;
 				matrix.runDemo2();
 			} else if (rect3.pressed()) {
 				currentcolor = rect3.basecolor;
 				matrix.runDemo3();
+			} else if (rect4.pressed()) {
+				currentcolor = rect4.basecolor;
+				matrix.runDemo4(img);
 			}
 		}
 	}

@@ -76,22 +76,35 @@ class LEDController extends PApplet {
 	public void display() {
 	//	println("display");
 		// app.background(255, 0, 234);
-		for (int i = 0; i < ledBuffer.length; i += 3) {
-
-			if (i % 3 == 0 && i < (ledBuffer.length - 3) && i > 0) {
+		for (int i = 0; i < ledBuffer.length-3; i += 3) {
+			
+			if (i % 3 == 0 && i < (ledBuffer.length - 3)) {
 				
+				int r = unsignedByteToInt(ledBuffer[i]);
+				int g = unsignedByteToInt(ledBuffer[i+2]);
+				int b = unsignedByteToInt(ledBuffer[i+1]);
+				println("R:"+r+"  g:"+g+"  b:"+b);
 				app.noStroke();
-				app.fill(unsignedByteToInt(ledBuffer[i - 2]) , unsignedByteToInt(ledBuffer[i - 1]) , unsignedByteToInt(ledBuffer[i - 0]));
-				
-				int theX = (i%(LEDS_WIDE*3))/3-1;
+			//	app.fill(unsignedByteToInt(ledBuffer[i - 2]) , unsignedByteToInt(ledBuffer[i - 1]) , unsignedByteToInt(ledBuffer[i - 0]));
+				app.fill(r, g, b);
+				int theX = (i%(LEDS_WIDE*3))/3;
 				int theY = floor(((i-theX)/3)/LEDS_WIDE);
 				app.rect(theX*10, theY*10, 10, 10);
-			
 			}
-
 		}
-
-
+		// app.background(255, 0, 234);
+//		for (int i = 0; i < ledBuffer.length; i += 3) {
+//
+//			if (i % 3 == 0 && i < (ledBuffer.length - 3) && i > 0) {
+//				
+//				app.noStroke();
+//				app.fill(unsignedByteToInt(ledBuffer[i - 2]) , unsignedByteToInt(ledBuffer[i - 1]) , unsignedByteToInt(ledBuffer[i - 0]));
+//				
+//				int theX = (i%(LEDS_WIDE*3))/3;
+//				int theY = floor(((i-theX)/3)/LEDS_WIDE);
+//				app.rect(theX*10, theY*10, 10, 10);
+//			}
+//		}
 	}
 
 	public static int unsignedByteToInt(byte b) {
