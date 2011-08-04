@@ -20,6 +20,7 @@ public class LEDMatrixApp extends PApplet {
 	public void setup() {
 		// --- LED Controller setup
 		size(400, 300);
+		frameRate(14);
 
 		String[] lister = Serial.list();
 

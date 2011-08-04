@@ -153,7 +153,7 @@ class LEDMatrix extends PApplet {
 			
 			lc.setRGB(count, round(col.red()*255), round(col.green()*255), round(col.blue()*255));
 			count++;
-			lc.SendLEDs();
+			//lc.SendLEDs();
 		}else{
 			startAdding = false;
 		}
@@ -163,9 +163,9 @@ class LEDMatrix extends PApplet {
 	void strobeOnOff(int theTimes) {
 		for (int i = 0; i < theTimes; i++) {
 			lc.setAllTo(0, 0, 0);
-			lc.SendLEDs();
+		//	lc.SendLEDs();
 			lc.setAllTo(255, 255, 255);
-			lc.SendLEDs();
+		//	lc.SendLEDs();
 		}
 	}
 
@@ -177,7 +177,7 @@ class LEDMatrix extends PApplet {
 			myDrawLineDown(sweepCount, 0, sweepCount, height, 84, 201, 255);
 			sweepCount++;
 			// refresh();
-			lc.SendLEDs();
+		//	lc.SendLEDs();
 		} else {
 			sweepAcross = false;
 		}
@@ -204,7 +204,7 @@ class LEDMatrix extends PApplet {
 		myDrawLineDown(35, 0, 30, 5, 84, 255, 133);
 		myDrawLineDown(35, 7, 30, 25, 84, 255, 133);
 		
-		lc.SendLEDs();
+		//lc.SendLEDs();
 		// TODO Auto-generated method stub
 		
 	}
@@ -286,7 +286,7 @@ class LEDMatrix extends PApplet {
 			lc.setRGB(i, round(col.red() *255), round(col.green()*255),round(col.blue()));
 			
 		}
-		lc.SendLEDs();
+		//lc.SendLEDs();
 		
 		// TODO Auto-generated method stub
 		
