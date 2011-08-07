@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="serial/src">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LEDMatrixApp/libSrc"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="libSrc"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/core.jar"/>
 	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
@@ -24,9 +20,19 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/serial.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LEDMatrixApp/libNative"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="LEDMatrixAppOrig/libNative"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/colorutils.jar"/>
+	<classpathentry kind="lib" path="lib/controlP5/library/controlP5.jar" sourcepath="lib/controlP5/src/controlP5">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/alistaircolling/Documents/EclipseWorkspace/LEDMatrixApp/lib/controlP5/reference/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/gifAnimation/library/gifAnimation.jar" sourcepath="lib/gifAnimation/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/alistaircolling/Documents/EclipseWorkspace/LEDMatrixApp/lib/gifAnimation/docs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
