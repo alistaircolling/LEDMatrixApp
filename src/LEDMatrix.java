@@ -140,7 +140,7 @@ class LEDMatrix extends PApplet {
 		if (startAdding){
 			addUp();
 		}
-		lc.SendLEDs();
+		//lc.SendLEDs();
 	}
 
 	private void addUp() {
@@ -149,8 +149,6 @@ class LEDMatrix extends PApplet {
 			float huez = count/1000f;
 			TColor col = TColor.BLACK.copy();
 			col.setHSV(huez, 100, 100);
-		//	col.newHSV(huez, 100, 100);
-			
 			lc.setRGB(count, round(col.red()*255), round(col.green()*255), round(col.blue()*255));
 			count++;
 			//lc.SendLEDs();

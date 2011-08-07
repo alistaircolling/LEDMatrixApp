@@ -4,6 +4,10 @@ import processing.serial.Serial;
 
 public class LEDMatrixApp extends PApplet {
 
+	private static final int BUTTON_PADDING = 30;
+
+	private static final int GRID_SIZE = 30;
+
 	// ======================================== END LC & Matrix
 	int currentcolor;
 
@@ -19,17 +23,16 @@ public class LEDMatrixApp extends PApplet {
 
 	public void setup() {
 		// --- LED Controller setup
-		size(400, 300);
+		size(1201, 800);
 		frameRate(14);
 
 		String[] lister = Serial.list();
 
-		// println("hi hi hi hi");
-		lc = new LEDController(1000, this);
+		lc = new LEDController(1000, this, GRID_SIZE);
 		matrix = new LEDMatrix(lc, 40, 25);
 
-		myPort = new Serial(this, Serial.list()[0], 115200);
-		lc.begin(myPort);
+		//myPort = new Serial(this, Serial.list()[0], 115200);
+		//lc.begin(myPort);
 
 		// --- LED Controller setup END
 
@@ -46,39 +49,48 @@ public class LEDMatrixApp extends PApplet {
 		// Define and create rectangle button
 		buttoncolor = color(84, 201, 255);
 		highlight = color(255);
-		rect1 = new RectButton(20, 250, 20, buttoncolor, highlight);
+		rect1 = new RectButton(20, height-BUTTON_PADDING, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
 		buttoncolor = color(255, 0, 0);
 		highlight = color(255);
-		rect2 = new RectButton(50, 250, 20, buttoncolor, highlight);
+		rect2 = new RectButton(50, height-BUTTON_PADDING, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
 		buttoncolor = color(84, 255, 133);
 		highlight = color(255);
-		rect3 = new RectButton(80, 250, 20, buttoncolor, highlight);
+		rect3 = new RectButton(80, height-BUTTON_PADDING, 20, buttoncolor, highlight);
 
 		// Define and create rectangle button
 		buttoncolor = color(255, 240, 0);
 		highlight = color(255);
-		rect4 = new RectButton(110, 250, 20, buttoncolor, highlight);
+		rect4 = new RectButton(110, height-BUTTON_PADDING, 20, buttoncolor, highlight);
 
 		img = loadImage("antarctic.jpg");
 	}
 
 	public void draw() {
-		// println("draw");
 		matrix.refresh();
 		background(currentcolor);
 		lc.display();
-		// stroke(255);
 		update(mouseX, mouseY);
 		rect1.display();
 		rect2.display();
 		rect3.display();
 		rect4.display();
-		image(img, 400 - 40, 250);
+		image(img, width - 40, height-25);
+		drawGrid();
 
+	}
+
+	private void drawGrid() {
+		for (int i = 0; i < 40; i++) {
+			stroke(0);
+			noFill();
+			for (int j = 0; j < 25; j++) {
+				rect(i*GRID_SIZE, j*GRID_SIZE, GRID_SIZE, GRID_SIZE);
+			}
+		}
 	}
 
 	void update(int x, int y) {
