@@ -86,8 +86,8 @@ public class LEDMatrixApp extends PApplet {
 
 		// -- Font - really a simple demo - better text / font stuff around I
 		// think
-		fontA = loadFont("pfr16.vlw");
-		textFont(fontA, 12);
+		fontA = loadFont("pfr14.vlw");
+		textFont(fontA, 14);
 
 		// -- Used for trailer demo
 		pg = createGraphics(80, 80, P2D);
@@ -197,19 +197,19 @@ public class LEDMatrixApp extends PApplet {
 	}
 
 	private void weatherDemo() {
-		fillBGGrad(TColor.BLUE.copy(), TColor.BLACK.copy());
+		fillBGGrad(TColor.BLACK.copy(),TColor.BLUE.copy());
 		loadFromCanvas();
 		setupWeatherIcons();
 		ledCanvas.fill(255);
 		ledCanvas.textFont(fontA, 12);
 		ledCanvas.textSize(12);
-		ledCanvas.text("Today", 2, 20);
+		ledCanvas.text("Today", 1, 16);
 		
 		loadFromCanvas();
 
 		String url = "http://weather.yahooapis.com/forecastrss?p=UKXX0085&u=c";
 		XMLElement rss = new XMLElement(this, url);
-		delay(2000);
+		delay(500);
 		XMLElement[] today = rss.getChildren("channel/item");
 		XMLElement todayChildren = today[0];
 
@@ -228,7 +228,7 @@ public class LEDMatrixApp extends PApplet {
 
 		int ranWeather = (int) random(0, 50);
 		PImage icon = weatherIcons[ranWeather];
-		ledCanvas.image(icon, 18, 2, 20, 20);
+		ledCanvas.image(icon, 18, 2, 16, 16);
 		ledCanvas.fill(0);
 		ledCanvas.textFont(fontA, 12);
 		ledCanvas.textSize(12);
@@ -243,6 +243,7 @@ public class LEDMatrixApp extends PApplet {
 		ColorGradient grad = new ColorGradient();
 		grad.setInterpolator(new CosineInterpolation());
 		grad.addColorAt(0, from);
+		grad.addColorAt(10, to);
 		grad.addColorAt(25, to);
 		ColorList l = grad.calcGradient(0, 25);
 		int y = 0;
