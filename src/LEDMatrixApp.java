@@ -78,6 +78,7 @@ public class LEDMatrixApp extends PApplet {
 	private PImage storm;
 	private PImage sun;
 	private PImage[] weatherIcons;
+	private int[] tubeLines;
 
 	public void setup() {
 
@@ -138,11 +139,13 @@ public class LEDMatrixApp extends PApplet {
 		control.addButton("Scrolling text", 1, 10, 10, 80, 19);
 		control.addButton("Gif demo", 2, 10, 30, 80, 19);
 		control.addButton("Weather demo", 3, 10, 50, 80, 19);
-		// control.addButton("Text demo", 4, 10, 70, 80, 19);
+		control.addButton("Tube demo", 4, 10, 70, 80, 19);
 
 		// testing only
 
 		// weatherDemo();
+		
+		
 	}
 
 	private void setupWeatherIcons() {
@@ -188,12 +191,68 @@ public class LEDMatrixApp extends PApplet {
 			weatherDemo();
 			break;
 		case 4:
-			showText();
+			tubeDemo();
 			break;
 
 		default:
 			break;
 		}
+	}
+
+	private void tubeDemo() {
+		
+		tubeLines = new int[12];
+		tubeLines[0] = 0xb36307;
+		tubeLines[1] = 0xe32118;
+		tubeLines[2] = 0xf7cc00;
+		tubeLines[3] = 0x003788;
+		tubeLines[4] = 0x00782b;
+		tubeLines[5] = 0x95cdba;
+		tubeLines[6] = 0xf3a9bb;
+		tubeLines[7] = 0x0098d4;
+		tubeLines[8] = 0xa0a5a9;
+		tubeLines[9] = 0x9b0056;
+		tubeLines[10] = 0x0;
+		tubeLines[11] = 0xee7c10;
+		
+		setCanvasBg(255, 255, 255);
+		
+		int[] ranAr = generateRandomArray(tubeLines.length, 3);
+		
+		for (int i = 0; i < tubeLines.length; i++) {
+			for (int j = 0; j <= MATRIX_ROWS; j++) {
+				
+				int targX = (i*3)+3;
+				int targY = j;
+				TColor col = TColor.BLACK.copy();
+				col.setARGB(tubeLines[i]);
+				ledCanvas.strokeWeight(3);
+//				if (ranAr[i]==2 && j>18){
+//					ledCanvas.stroke(50);
+//				}else{
+					ledCanvas.stroke(round(255*col.red()), round(255*col.green()), round(255*col.blue()));//tubeLines[i]);
+					
+				//}
+				ledCanvas.line(targX, targY, targX, targY+1);
+				loadFromCanvas();
+				delay(10);
+			}
+		}
+		
+		ledCanvas.fill(255);
+		ledCanvas.textFont(fontA, 8);
+		ledCanvas.textSize(8);
+		ledCanvas.text("TUBES", 5, 16);
+		loadFromCanvas();
+	}
+
+	private int[] generateRandomArray( int size, int range) {
+		
+		int[] returnAr = new int[size];
+		for (int i = 0; i < returnAr.length; i++) {
+			returnAr[i] = round(random(0, range));
+		}
+		return returnAr;
 	}
 
 	private void weatherDemo() {
@@ -216,12 +275,9 @@ public class LEDMatrixApp extends PApplet {
 		for (int i = 0; i < todayChildren.getChildCount(); i++) {
 			XMLElement child = todayChildren.getChild(i);
 			String childName = child.getName();
-			println(childName);
-			println(childName.compareTo("yweather:condition"));
 			if (childName.compareTo("yweather:condition") == 0) {
 				temp = child.getFloatAttribute("temp");
 				weatherCode = child.getFloatAttribute("code");
-				println("temp:" + temp);
 			}
 		}
 		fillBGGrad(TColor.WHITE.copy(), TColor.BLUE.copy());
@@ -275,11 +331,12 @@ public class LEDMatrixApp extends PApplet {
 		setCanvasBg(255, 255, 255);
 		loadFromCanvas();
 		setCanvasBg(0, 0, 0);
-		showGif("letters.gif", 300, 1, 24, 8, 0);
+		showGif("letters.gif", 100, 1, 24, 8, 0);
 		delay(500);
 		setCanvasBg(255, 255, 255);
 		showGif("truck.gif", 30, 10, 30, 5, -2);
 		delay(500);
+		setCanvasBg(255, 255, 255);
 
 	}
 
