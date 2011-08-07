@@ -7,10 +7,10 @@
 
 //===================== LED CONTROLLER AND MATRIX CODE
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import gifAnimation.Gif;
+
+import java.util.Iterator;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -18,6 +18,10 @@ import processing.core.PImage;
 import processing.core.PShape;
 import processing.serial.Serial;
 import processing.xml.XMLElement;
+import toxi.color.ColorGradient;
+import toxi.color.ColorList;
+import toxi.color.TColor;
+import toxi.math.CosineInterpolation;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 
@@ -63,6 +67,17 @@ public class LEDMatrixApp extends PApplet {
 	private ControlP5 control;
 	public controlP5.Button b;
 	private AppConfig config;
+	private float temp;
+	private float weatherCode;
+	private PImage cloudRain;
+	private PImage cloudSun;
+	private PImage cloud;
+	private PImage heavyRain;
+	private PImage snow;
+	private PImage lightCloud;
+	private PImage storm;
+	private PImage sun;
+	private PImage[] weatherIcons;
 
 	public void setup() {
 
@@ -71,8 +86,8 @@ public class LEDMatrixApp extends PApplet {
 
 		// -- Font - really a simple demo - better text / font stuff around I
 		// think
-		fontA = loadFont("uni22.vlw");
-		textFont(fontA, 24);
+		fontA = loadFont("pfr16.vlw");
+		textFont(fontA, 12);
 
 		// -- Used for trailer demo
 		pg = createGraphics(80, 80, P2D);
@@ -120,9 +135,43 @@ public class LEDMatrixApp extends PApplet {
 
 		// set text on ledcanvas
 		control = new ControlP5(this);
-		control.addButton("Graphic demo", 1, 10, 10, 80, 19);
+		control.addButton("Scrolling text", 1, 10, 10, 80, 19);
 		control.addButton("Gif demo", 2, 10, 30, 80, 19);
-		control.addButton("Box demo", 3, 10, 50, 80, 19);
+		control.addButton("Weather demo", 3, 10, 50, 80, 19);
+		// control.addButton("Text demo", 4, 10, 70, 80, 19);
+
+		// testing only
+
+		// weatherDemo();
+	}
+
+	private void setupWeatherIcons() {
+		cloudRain = loadImage("weather/cloudy-with-rain.png");
+		cloudSun = loadImage("weather/cloudy-with-sunshine.png");
+		cloud = loadImage("weather/cloudy.png");
+		heavyRain = loadImage("weather/heavy-rain.png");
+		snow = loadImage("weather/heavy-snow.png");
+		lightCloud = loadImage("weather/light-cloud.png");
+		storm = loadImage("weather/storm.png");
+		sun = loadImage("weather/sunny.png");
+		weatherIcons = new PImage[3200];
+
+		setIcon(weatherIcons, storm, 0, 5);
+		setIcon(weatherIcons, snow, 6, 10);
+		setIcon(weatherIcons, cloudRain, 11, 15);
+		setIcon(weatherIcons, cloudSun, 16, 25);
+		setIcon(weatherIcons, cloud, 26, 38);
+		setIcon(weatherIcons, heavyRain, 38, 42);
+		setIcon(weatherIcons, lightCloud, 43, 45);
+		setIcon(weatherIcons, sun, 45, 50);
+
+	}
+
+	private void setIcon(PImage[] array, PImage img, int startI, int endI) {
+
+		for (int i = startI; i <= endI; i++) {
+			array[i] = img;
+		}
 	}
 
 	public void controlEvent(ControlEvent theEvent) {
@@ -130,13 +179,16 @@ public class LEDMatrixApp extends PApplet {
 				+ theEvent.controller().value());
 		switch ((int) theEvent.controller().value()) {
 		case 1:
-			scrollGraphicDemo();
+			aliDemo();
 			break;
 		case 2:
 			gifDemo();
 			break;
 		case 3:
-			tubeDemo();
+			weatherDemo();
+			break;
+		case 4:
+			showText();
 			break;
 
 		default:
@@ -144,56 +196,88 @@ public class LEDMatrixApp extends PApplet {
 		}
 	}
 
-	private void tubeDemo() {
+	private void weatherDemo() {
+		fillBGGrad(TColor.BLUE.copy(), TColor.BLACK.copy());
+		loadFromCanvas();
+		setupWeatherIcons();
+		ledCanvas.fill(255);
+		ledCanvas.textFont(fontA, 12);
+		ledCanvas.textSize(12);
+		ledCanvas.text("Today", 2, 20);
+		
+		loadFromCanvas();
 
-		setCanvasBg(0xB9F7FF);
+		String url = "http://weather.yahooapis.com/forecastrss?p=UKXX0085&u=c";
+		XMLElement rss = new XMLElement(this, url);
+		delay(2000);
+		XMLElement[] today = rss.getChildren("channel/item");
+		XMLElement todayChildren = today[0];
+
+		for (int i = 0; i < todayChildren.getChildCount(); i++) {
+			XMLElement child = todayChildren.getChild(i);
+			String childName = child.getName();
+			println(childName);
+			println(childName.compareTo("yweather:condition"));
+			if (childName.compareTo("yweather:condition") == 0) {
+				temp = child.getFloatAttribute("temp");
+				weatherCode = child.getFloatAttribute("code");
+				println("temp:" + temp);
+			}
+		}
+		fillBGGrad(TColor.WHITE.copy(), TColor.BLUE.copy());
+
+		int ranWeather = (int) random(0, 50);
+		PImage icon = weatherIcons[ranWeather];
+		ledCanvas.image(icon, 18, 2, 20, 20);
+		ledCanvas.fill(0);
+		ledCanvas.textFont(fontA, 12);
+		ledCanvas.textSize(12);
+		ledCanvas.textLeading(18);
+		ledCanvas.text(round(temp), 2, 12);
+		ledCanvas.text("¡c", 2, 24);
 		loadFromCanvas();
-		ledCanvas.textFont(fontA, 24);
-		ledCanvas.text("loading rss..");
+
+	}
+
+	private void fillBGGrad( TColor from, TColor to) {
+		ColorGradient grad = new ColorGradient();
+		grad.setInterpolator(new CosineInterpolation());
+		grad.addColorAt(0, from);
+		grad.addColorAt(25, to);
+		ColorList l = grad.calcGradient(0, 25);
+		int y = 0;
+		for (Iterator i = l.iterator(); i.hasNext();) {
+			TColor c = (TColor) i.next();
+			ledCanvas.stroke(c.toARGB());
+			ledCanvas.line(0, y, 40, y);
+			y++;
+		}
+	}
+
+	private void showText() {
+
+		// ledCanvas.stroke(0);
+		ledCanvas.fill(0);
+		ledCanvas.textFont(fontA, 8);
+		ledCanvas.text("Hello!", 5, 24);
 		loadFromCanvas();
-		
-		String url = "http://weather.yahooapis.com/forecastrss?p=UKXX0085&u=c";  
-		XMLElement rss = new XMLElement(this, url);  
-		
-		XMLElement[] today = rss.getChildren("channel/item");  
-		
-		
-		 try {
-			    // setup object mapper using the AppConfig class
-			 	
-			    JAXBContext context = JAXBContext.newInstance(AppConfig.class);
-			    // parse the XML and return an instance of the AppConfig class
-			    config = (AppConfig) context.createUnmarshaller().unmarshal(createInput(url));
-			  } catch(JAXBException e) {
-			    // if things went wrong...
-			    println("error parsing xml: ");
-			    e.printStackTrace();
-			    // force quit
-			    System.exit(1);
-			  }
-			  // here we can be sure the config has been loaded successfully...
-			  // use settings to define window size
-			  size(config.width,config.height);
-			  // set window title
-			  frame.setTitle(config.title+" v"+config.versionID);
-			  // list all the urls loaded & their descriptions
-			
-		
+
 	}
 
 	private void gifDemo() {
-		setCanvasBg(255);
+		setCanvasBg(255, 255, 255);
 		showGif("time.gif", 40, 1, 24, 8, 1);
 		delay(500);
-		setCanvasBg(255);
+		setCanvasBg(255, 255, 255);
 		loadFromCanvas();
 		showGif("eye.gif", 100, 3, 26, 8, 0);
-		setCanvasBg(0xB9F7FF);
+		setCanvasBg(255, 255, 255);
 		loadFromCanvas();
+		setCanvasBg(0, 0, 0);
 		showGif("letters.gif", 300, 1, 24, 8, 0);
 		delay(500);
+		setCanvasBg(255, 255, 255);
 		showGif("truck.gif", 30, 10, 30, 5, -2);
-		setCanvasBg(0);
 		delay(500);
 
 	}
@@ -203,7 +287,7 @@ public class LEDMatrixApp extends PApplet {
 		PImage[] gifFrames = Gif.getPImages(this, string);
 		int loops = l; // can be used for repeating animation
 		for (int i = 0; i < gifFrames.length * loops; i++) {
-			setCanvasBg(255);
+			setCanvasBg(255, 255, 255);
 			ledCanvas.image(gifFrames[i % gifFrames.length], xPos, yPos, size,
 					size);
 			loadFromCanvas();
@@ -212,9 +296,9 @@ public class LEDMatrixApp extends PApplet {
 
 	}
 
-	private void setCanvasBg(int i) {
+	private void setCanvasBg(int r, int g, int b) {
 		ledCanvas.noStroke();
-		ledCanvas.fill(i);
+		ledCanvas.fill(r, g, b);
 		ledCanvas.rect(0, 0, MATRIX_COLS, MATRIX_ROWS);
 
 	}
@@ -351,9 +435,13 @@ public class LEDMatrixApp extends PApplet {
 	// --- This demo shows the process of loading text and scrolling it across
 	// the matrix
 	void scrollWordDemo() {
-		ledCanvas.fill(0);
+		// ledCanvas.fill(0);
+		ledCanvas.textFont(fontA, 24);
+		ledCanvas.smooth();
+
 		for (int i = MATRIX_COLS; i > 0 - MATRIX_COLS - 30; i--) {
-			ledCanvas.background(102);
+			// ledCanvas.background(102);
+			ledCanvas.stroke(0);
 			ledCanvas.text("Hello", i, 9);
 			loadFromCanvas();
 		}
@@ -369,7 +457,7 @@ public class LEDMatrixApp extends PApplet {
 			ledCanvas.fill(0);
 			ledCanvas.textFont(fontA, 14);
 			ledCanvas.smooth();
-			ledCanvas.text("Hello KND!", i, 10);
+			ledCanvas.text("Hello KND!", i, 15);
 			PImage textImg = new PImage();
 
 			loadFromCanvas();
