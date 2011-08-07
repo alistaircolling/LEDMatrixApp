@@ -322,12 +322,16 @@ public class LEDMatrixApp extends PApplet {
 	}
 
 	private void gifDemo() {
-		setCanvasBg(255, 255, 255);
-		showGif("time.gif", 40, 1, 24, 8, 1);
+		setCanvasBg(0, 90, 130);
+		loadFromCanvas();
+		showGif("dog.gif", 200, 10, 36, 2, -5);
+//		delay(500);
+//		setCanvasBg(255, 255, 255);
+//		showGif("time.gif", 40, 1, 24, 8, 1);
 		delay(500);
 		setCanvasBg(255, 255, 255);
 		loadFromCanvas();
-		showGif("eye.gif", 100, 3, 26, 8, 0);
+		showGif("eye.gif", 100, 3, 26, 7, 0);
 		setCanvasBg(255, 255, 255);
 		loadFromCanvas();
 		setCanvasBg(0, 0, 0);
@@ -515,7 +519,7 @@ public class LEDMatrixApp extends PApplet {
 			ledCanvas.fill(0);
 			ledCanvas.textFont(fontA, 14);
 			ledCanvas.smooth();
-			ledCanvas.text("Hello KND!", i, 15);
+			ledCanvas.text("Hello KND!", i, 18);
 			PImage textImg = new PImage();
 
 			loadFromCanvas();
